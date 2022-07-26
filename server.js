@@ -26,19 +26,21 @@ app.get("/notes", (req, res) => {
 app.get("/api/notes", (req, res) => res.json(note_db));
 
 app.post("/api/notes", (req, res) => {
+    //obtain data from request parameter
     const { title, text } = req.body;
+    //create new note object with obtained data
     const newNote = {
         id: randomUUID(),
         title: title,
         text: text,
     };
-
+    //add new note object to notes database
     note_db.push(newNote);
-
+    //update json database on local storage
     fs.writeFile("./db/db.json", JSON.stringify(note_db), (err) =>
         err ? console.error(err) : console.log("Success")
     );
-
+    //return updated notes database as response
     res.send(note_db);
 });
 
