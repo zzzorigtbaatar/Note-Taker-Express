@@ -25,6 +25,23 @@ app.get("/notes", (req, res) => {
 
 app.get("/api/notes", (req, res) => res.json(note_db));
 
+app.post("/api/notes", (req, res) => {
+    const { title, text } = req.body;
+    const newNote = {
+        id: randomUUID(),
+        title: title,
+        text: text,
+    };
+
+    note_db.push(newNote);
+
+    fs.writeFile("./db/db.json", JSON.stringify(note_db), (err) =>
+        err ? console.error(err) : console.log("Success")
+    );
+
+    res.send(note_db);
+});
+
 app.listen(PORT, () => {
     console.log(`Example app listening at https://localhost:${PORT}`);
 });
